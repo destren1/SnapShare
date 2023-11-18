@@ -1,6 +1,7 @@
 const placesList = document.querySelector(".places__list");
 const cardTemplate = document.querySelector("#card-template").content;
 
+// Функция создания карточки
 const addCard = (cardData, deleteCallBack) => {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
 
@@ -16,9 +17,12 @@ const addCard = (cardData, deleteCallBack) => {
   return cardElement;
 };
 
+// Функция удаления карточки
+const deleteCard = (cardElement) => {
+  cardElement.remove();
+};
+
 initialCards.forEach((item) => {
-  const newCard = addCard(item, (cardElement) => {
-    cardElement.remove();
-  });
+  const newCard = addCard(item, deleteCard);
   placesList.append(newCard);
 });
