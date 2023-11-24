@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Проектная работа на применение начальных навыков JS",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+		"build": "webpack"
+	},
   "author": "",
   "license": "ISC",
   "devDependencies": {
