@@ -29,3 +29,4 @@ initialCards.forEach((item) => {
   const newCard = addCard(item, deleteCard);
   placesList.append(newCard);
 });
+
