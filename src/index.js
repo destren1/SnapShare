@@ -5,7 +5,7 @@ const placesList = document.querySelector(".places__list");
 const cardTemplate = document.querySelector("#card-template").content;
 
 // Функция создания карточки
-const addCard = (cardData, deleteCallBack) => {
+const addCard = (cardData, deleteCallBack,like) => {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
 
   cardElement.querySelector(".card__image").src = cardData.link;
@@ -16,6 +16,7 @@ const addCard = (cardData, deleteCallBack) => {
   deleteButton.addEventListener("click", () => {
     deleteCallBack(cardElement);
   });
+	placesList.addEventListener("click", like);
 
   return cardElement;
 };
@@ -42,6 +43,7 @@ const openPopupNewCard = () => {
   popupNewCard.classList.add("popup_is-opened");
   document.addEventListener("keydown", closeOnEsc);
 };
+// через togle сделать
 const openPopupEdit = () => {
   popupEdit.classList.add("popup_is-opened");
   document.addEventListener("keydown", closeOnEsc);
@@ -113,4 +115,9 @@ formElementNewCard.addEventListener("submit", (event) => {
   formElementNewCard.reset();
 });
 
+// лайк
 
+const like = (evt) => {
+  evt.target.classList.toggle("card__like-button_is-active");
+};
+placesList.addEventListener("click", like);
