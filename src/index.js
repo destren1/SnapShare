@@ -30,6 +30,7 @@ initialCards.forEach((item) => {
   placesList.append(newCard);
 });
 
+// следующий спринт
 const page = document.querySelector(".page");
 const editButton = page.querySelector(".profile__edit-button");
 const addButton = page.querySelector(".profile__add-button");
@@ -66,25 +67,50 @@ const popupInteraction = (evt) => {
     openPopupNewCard();
   } else if (evt.target.classList.contains("popup__close")) {
     closePopup();
-  } else if (!evt.target.closest("popup__content")) {
+  } else if (!evt.target.closest(".popup__content")) {
     closePopup();
   }
 };
 
 page.addEventListener("click", popupInteraction);
 
-const formElement = document.querySelector(".popup__form");
+//редактирование профиля через форму
+const formElement = document.querySelector("[name='edit-profile']");
 const nameInput = formElement.querySelector(".popup__input_type_name");
 const jobInput = formElement.querySelector(".popup__input_type_description");
 
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
-function handleFormSubmit(evt) {
+const handleFormSubmit = (evt) => {
   evt.preventDefault();
 
   profileTitle.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
-}
+  closePopup();
+};
 
+//добавление новой карточки через форму
 formElement.addEventListener("submit", handleFormSubmit);
+
+const formElementNewCard = document.querySelector("[name='new-place']");
+const cardName = formElementNewCard.querySelector(
+  ".popup__input_type_card-name"
+);
+const url = formElementNewCard.querySelector(".popup__input_type_url");
+
+const handleFormSubmitNewCard = (cardNameValue, urlValue) => {
+  initialCards.unshift({ name: cardNameValue, link: urlValue });
+};
+
+formElementNewCard.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  handleFormSubmitNewCard(cardName.value, url.value);
+  const newCard = addCard(initialCards[0]);
+  placesList.prepend(newCard);
+  closePopup();
+  formElementNewCard.reset();
+});
+
+
