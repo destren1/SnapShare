@@ -35,17 +35,18 @@ const addCard = (cardData, deleteCallBack, like, openPopupImage) => {
 
   return cardElement;
 };
+
 // лайк
 const like = (evt) => {
   if (evt.target.classList.contains("card__like-button")) {
     evt.target.classList.toggle("card__like-button_is-active");
   }
 };
-
+// функция открытия изображения
 const openPopupImage = (evt) => {
   if (evt.target.classList.contains("card__image")) {
-    popupTypeImage.classList.add("popup_is-opened", "popup_is-animated");
-    document.addEventListener("keydown", closeOnEsc);
+    animation(popupTypeImage);
+    setTimeout(openPopup, 1, popupTypeImage);
     popupImage.src = evt.target.src;
     popupImage.alt = evt.target.alt;
     popupCaption.textContent = evt.target.alt;
@@ -61,56 +62,60 @@ initialCards.forEach((item) => {
   const newCard = addCard(item, deleteCard, like, openPopupImage);
   placesList.append(newCard);
 });
-
-const openPopupNewCard = () => {
-  popupNewCard.classList.add("popup_is-opened", "popup_is-animated");
+// функция открытия модального окна
+const openPopup = (modal) => {
+  modal.classList.add("popup_is-opened");
   document.addEventListener("keydown", closeOnEsc);
 };
-
-const openPopupEdit = () => {
-  popupEdit.classList.add("popup_is-opened", "popup_is-animated");
-  document.addEventListener("keydown", closeOnEsc);
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileDescription.textContent;
-};
-
-const closePopup = () => {
-  popupEdit.classList.remove("popup_is-opened");
-  popupNewCard.classList.remove("popup_is-opened");
-  popupTypeImage.classList.remove("popup_is-opened");
+// функция закрытия модального окна
+const closePopup = (modal) => {
+  modal.classList.remove("popup_is-opened");
   document.removeEventListener("keydown", closeOnEsc);
 };
+const animation = (modal) => {
+  modal.classList.add("popup_is-animated");
+};
+// функция закрытия на esc
 const closeOnEsc = (evt) => {
   if (evt.key === "Escape") {
-    closePopup();
+    const openedPopup = document.querySelector(".popup_is-opened");
+    if (openedPopup) {
+      closePopup(openedPopup);
+    }
   }
 };
-
-const popupInteraction = (evt) => {
+// функция взаимодействия с модальными окнами
+const popupInteractions = (evt) => {
+  const currentPopup = evt.target.closest(".popup");
   if (evt.target === editButton) {
-    openPopupEdit();
+    animation(popupEdit);
+    setTimeout(openPopup, 1, popupEdit);
+    nameInput.value = profileTitle.textContent;
+    jobInput.value = profileDescription.textContent;
   } else if (evt.target === addButton) {
-    openPopupNewCard();
+    animation(popupNewCard);
+    setTimeout(openPopup, 1, popupNewCard);
   } else if (evt.target.classList.contains("popup__close")) {
-    closePopup();
+    if (currentPopup) {
+      closePopup(currentPopup);
+    }
   } else if (!evt.target.closest(".popup__content")) {
-    closePopup();
+    if (currentPopup) {
+      closePopup(currentPopup);
+    }
   }
 };
 
-page.addEventListener("click", popupInteraction);
+page.addEventListener("click", popupInteractions);
 
-//редактирование профиля через форму
-
+// функция для редактирования профиля
 const handleFormSubmit = (evt) => {
   evt.preventDefault();
 
   profileTitle.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
-  closePopup();
+  closePopup(popupEdit);
 };
-
-//добавление новой карточки через форму
 formElement.addEventListener("submit", handleFormSubmit);
 
 const cardName = formElementNewCard.querySelector(
@@ -118,16 +123,15 @@ const cardName = formElementNewCard.querySelector(
 );
 const url = formElementNewCard.querySelector(".popup__input_type_url");
 
-const handleFormSubmitNewCard = (cardNameValue, urlValue) => {
-  initialCards.unshift({ name: cardNameValue, link: urlValue });
-};
+// функция для добавления новой карточки через модальное окно
+const handleFormSubmitNewCard = (evt) => {
+  evt.preventDefault();
 
-formElementNewCard.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  handleFormSubmitNewCard(cardName.value, url.value);
+  initialCards.unshift({ name: cardName.value, link: url.value });
   const newCard = addCard(initialCards[0]);
   placesList.prepend(newCard);
-  closePopup();
+  closePopup(popupNewCard);
   formElementNewCard.reset();
-});
+};
+
+formElementNewCard.addEventListener("submit", handleFormSubmitNewCard);
