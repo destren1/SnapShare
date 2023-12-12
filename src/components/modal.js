@@ -22,8 +22,18 @@ const closeOnEsc = (evt) => {
 
 // функция закрытия попапа нажатием на оверлей
 export const handleClosePopupClickOverlay = (evt) => {
-  const PopupCurrent = evt.target.closest(".popup");
+  const popupCurrent = evt.target.closest(".popup");
   if (evt.target.classList.contains("popup")) {
-    closePopup(PopupCurrent);
+    closePopup(popupCurrent);
+  }
+};
+
+// функция закрытия попапа на крестик
+export const handleClosePopupClickCross = (evt) => {
+  const popupCurrent = evt.target.closest(".popup");
+  if (evt.target.classList.contains("popup__close")) {
+    if (popupCurrent) {
+      closePopup(popupCurrent);
+    }
   }
 };
