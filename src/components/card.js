@@ -1,11 +1,9 @@
-import { openPopupImage } from "./modal";
-import { initialCards } from "./cards";
-
 // тэмплейт карточки
 const cardTemplate = document.querySelector("#card-template").content;
 
 // DOM узлы
 const placesList = document.querySelector(".places__list");
+const cardImage = cardTemplate.querySelector(".card__image");
 
 // Функция создания карточки
 export const addCard = (cardData, deleteCallBack, like, openPopupImage) => {
@@ -20,7 +18,9 @@ export const addCard = (cardData, deleteCallBack, like, openPopupImage) => {
     deleteCallBack(cardElement);
   });
   placesList.addEventListener("click", like);
-  document.addEventListener("click", openPopupImage);
+  cardElement.querySelector(".card__image").addEventListener("click", () => {
+    openPopupImage(cardData.name, cardData.link);
+  });
 
   return cardElement;
 };
@@ -36,9 +36,3 @@ export const like = (evt) => {
 export const deleteCard = (cardElement) => {
   cardElement.remove();
 };
-
-// метод добавления на страницу карточки
-initialCards.forEach((item) => {
-  const newCard = addCard(item, deleteCard, like, openPopupImage);
-  placesList.append(newCard);
-});
