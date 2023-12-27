@@ -3,7 +3,6 @@ const cardTemplate = document.querySelector("#card-template").content;
 
 // DOM узлы
 const placesList = document.querySelector(".places__list");
-const cardImage = cardTemplate.querySelector(".card__image");
 
 // Функция создания карточки
 export const addCard = (cardData, deleteCallBack, like, openPopupImage) => {

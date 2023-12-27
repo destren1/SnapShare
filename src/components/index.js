@@ -74,7 +74,6 @@ const handleFormSubmitEditProfile = (evt) => {
   profileDescription.textContent = inputJob.value;
   closePopup(popupEdit);
 };
-formEditProfile.addEventListener("submit", handleFormSubmitEditProfile);
 
 // функция для добавления новой карточки через модальное окно
 const handleFormSubmitNewCard = (evt) => {
@@ -85,13 +84,14 @@ const handleFormSubmitNewCard = (evt) => {
     name: inputNameFormAddNewCardValue,
     link: inputUrlFormAddNewCardValue,
   };
-    const NewCard = addCard(dataNewCard, deleteCard, like, openPopupImage);
-    placesList.prepend(NewCard);
+    const newCard = addCard(dataNewCard, deleteCard, like, openPopupImage);
+    placesList.prepend(newCard);
   closePopup(popupNewCard);
   formElementNewCard.reset();
 };
 
 // Слушатели
+formEditProfile.addEventListener("submit", handleFormSubmitEditProfile);
 formElementNewCard.addEventListener("submit", handleFormSubmitNewCard);
 buttonEdit.addEventListener("click", handleOpenPopupClickEditProfile);
 buttonAdd.addEventListener("click", handleOpenPopupClickAddCard);
