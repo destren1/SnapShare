@@ -7,6 +7,7 @@ import {
   handleClosePopupClickCross,
 } from "./modal";
 import { addCard, deleteCard, like } from "./card";
+import { clearValidation, enableValidation } from "./validation";
 
 // DOM узлы
 const page = document.querySelector(".page");
@@ -56,6 +57,7 @@ initialCards.forEach((item) => {
 
 // функция открытия модального окна с редактированием профиля
 const handleOpenPopupClickEditProfile = () => {
+  clearValidation(validationConfig, formEditProfile);
   inputName.value = profileTitle.textContent;
   inputJob.value = profileDescription.textContent;
   openPopup(popupEdit);
@@ -63,6 +65,8 @@ const handleOpenPopupClickEditProfile = () => {
 
 // функция открытия модального окна с добавлением карточки
 const handleOpenPopupClickAddCard = () => {
+  clearValidation(validationConfig, formElementNewCard);
+  formElementNewCard.reset();
   openPopup(popupNewCard);
 };
 
@@ -84,11 +88,24 @@ const handleFormSubmitNewCard = (evt) => {
     name: inputNameFormAddNewCardValue,
     link: inputUrlFormAddNewCardValue,
   };
-    const newCard = addCard(dataNewCard, deleteCard, like, openPopupImage);
-    placesList.prepend(newCard);
+  const newCard = addCard(dataNewCard, deleteCard, like, openPopupImage);
+  placesList.prepend(newCard);
   closePopup(popupNewCard);
   formElementNewCard.reset();
 };
+
+// Валидация
+
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__input-error_visible",
+};
+
+enableValidation(validationConfig);
 
 // Слушатели
 formEditProfile.addEventListener("submit", handleFormSubmitEditProfile);
