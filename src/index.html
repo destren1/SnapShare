@@ -66,17 +66,40 @@
     </div>
   </div>
 </div>
+<div class="popup popup_is-animated popup_type_avatar">
+	<div class="popup__content">
+		<button type="button" class="popup__close"></button>
+		<h3 class="popup__title">Вы уверены?</h3>
+		<form class="popup__form" novalidate name="delete-card">
+			<button type="submit" class="button popup__button">Да</button>
+		</form>
+	</div>
+</div>
+<div class="popup popup_is-animated popup_type_delete">
+	<div class="popup__content">
+		<button type="button" class="popup__close"></button>
+		<h3 class="popup__title">Обновить аватар</h3>
+		<form class="popup__form" novalidate name="edit-avatar">
+			<input type="url" name="url" class="popup__input popup__input_type_avatar" id="avatar-input" placeholder="Ссылка на картинку" required>
+			<span class="popup__error avatar-input-error"></span>
+			<button type="submit" class="button popup__button">Сохранить</button>
+		</form>
+	</div>
+</div>
 <script src="./scripts/cards.js"></script>
 <script src="./scripts/index.js" defer></script>
 
 <template id="card-template">
-  <li class="places__item card">
+  <li class="places__item  card" >
     <img class="card__image" src="" alt="" />
     <button type="button" class="card__delete-button"></button>
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+			<div class="card__container">
+				<button type="button" class="card__like-button"></button>
+				<p class="card__likes"></p>
+			</div>
     </div>
   </li>
 </template>
