@@ -1,11 +1,3 @@
-import { addCard, like, deleteCard } from "./card";
-import { openPopupImage, profileId } from "./index";
-
-const buttonSave = document.querySelectorAll(".popup__button");
-const profileTitle = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
-const profileAvatar = document.querySelector(".profile__image");
-const placesList = document.querySelector(".places__list");
 // конфиг
 const config = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-3",
@@ -28,32 +20,21 @@ export const getUserInformation = () => {
     headers: {
       Authorization: config.headers.authorization,
     },
-  }).then((res) => getResponseData(res));
+  }).then(getResponseData);
 };
 
 // сохранение отредактированных данных пользователя на сервере
-export const updateProfile = () => {
-  fetch(`${config.baseUrl}/users/me`, {
+export const updateProfile = ({ name, about }) => {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: "PATCH",
     headers: {
-      Authorization: config.headers.authorization,
-      "Content-type": config.headers["content-type"],
+      Authorization: config.headers,
     },
     body: JSON.stringify({
-      name: profileTitle.textContent,
-      about: profileDescription.textContent,
+      name: name,
+      about: about,
     }),
-  })
-    .then((res) => getResponseData(res))
-    .then((data) => {
-      console.log(`Обновление успешно: ${data}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderLoading(false);
-    });
+  }).then(getResponseData);
 };
 
 // функция подгрузки карточек с сервера
@@ -62,40 +43,21 @@ export const getInitialCards = () => {
     headers: {
       Authorization: config.headers.authorization,
     },
-  }).then((res) => getResponseData(res));
+  }).then(getResponseData);
 };
 
 // добавление новой карточки с сохранением на сервере
 export const addNewCard = (newCard) => {
-  fetch(`${config.baseUrl}/cards`, {
+  return fetch(`${config.baseUrl}/cards`, {
     method: "POST",
     headers: {
-      Authorization: config.headers.authorization,
-      "Content-type": config.headers["content-type"],
+      Authorization: config.headers,
     },
     body: JSON.stringify({
       name: newCard.name,
       link: newCard.link,
     }),
-  })
-    .then((res) => getResponseData(res))
-    .then((data) => {
-      const newCard = addCard(
-        data,
-        deleteCardData,
-        like,
-        openPopupImage,
-        deleteCard,
-        profileId
-      );
-      placesList.prepend(newCard);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderLoading(false);
-    });
+  }).then(getResponseData);
 };
 
 // удаление данных карточки с сервера
@@ -103,18 +65,9 @@ export const deleteCardData = (cardId) => {
   fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: {
-      Authorization: config.headers.authorization,
-      "Content-type": config.headers["content-type"],
+      Authorization: config.headers,
     },
-  })
-    .then((res) => getResponseData(res))
-    .then(() => {
-      const cardElement = document.getElementById(cardId);
-      if (cardElement) {
-        cardElement.remove();
-      }
-    })
-    .catch((err) => console.log(err));
+  }).then(getResponseData);
 };
 
 // постановка лайка
@@ -122,10 +75,9 @@ export const displayingLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: {
-      Authorization: config.headers.authorization,
-      "Content-type": config.headers["content-type"],
+      Authorization: config.headers,
     },
-  }).then((res) => getResponseData(res));
+  }).then(getResponseData);
 };
 
 // удаление лайка
@@ -133,10 +85,9 @@ export const deleteLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: {
-      Authorization: config.headers.authorization,
-      "Content-type": config.headers["content-type"],
+      Authorization: config.headers,
     },
-  }).then((res) => getResponseData(res));
+  }).then(getResponseData);
 };
 
 // изменение аватара
@@ -144,33 +95,22 @@ export const editAvatar = (link) => {
   fetch(`${config.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: {
-      Authorization: config.headers.authorization,
-      "Content-type": config.headers["content-type"],
+      Authorization: config.headers,
     },
     body: JSON.stringify({
       avatar: link,
     }),
-  })
-    .then((res) => getResponseData(res))
-    .then((data) => {
-      profileAvatar.style.backgroundImage = `url(${data.avatar})`;
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderLoading(false);
-    });
+  }).then(getResponseData);
 };
 
 // функция улучшения UX, пока данные загружаются
-export const renderLoading = (isLoading) => {
+export const renderLoading = (isLoading, buttonSubmit) => {
   if (isLoading) {
-    buttonSave.forEach((button) => {
+    buttonSubmit.forEach((button) => {
       button.textContent = "Сохранение...";
     });
   } else {
-    buttonSave.forEach((button) => {
+    buttonSubmit.forEach((button) => {
       button.textContent = "Сохранить";
     });
   }

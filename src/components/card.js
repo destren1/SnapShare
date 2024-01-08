@@ -9,7 +9,6 @@ export const addCard = (
   deleteCallBack,
   like,
   openPopupImage,
-  deleteCardFromDOM,
   profileId
 ) => {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -33,8 +32,7 @@ export const addCard = (
     deleteButton.classList.add("card__delete-button__hidden");
   } else {
     deleteButton.addEventListener("click", () => {
-      deleteCallBack(cardData._id);
-      deleteCardFromDOM(cardElement);
+      deleteCallBack(cardData._id, cardElement);
     });
   }
   buttonLike.addEventListener("click", () => {

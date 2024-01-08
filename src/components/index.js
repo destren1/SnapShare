@@ -45,6 +45,11 @@ const buttonEdit = document.querySelector(".profile__edit-button");
 const buttonAdd = document.querySelector(".profile__add-button");
 const buttonChangeAvatar = document.querySelector(".profile__image");
 const buttonPopupClose = document.querySelectorAll(".popup__close");
+const buttonSubmitEditProfile = document.querySelector(".popup__button-edit");
+const buttonSubmitAddCard = document.querySelector(".popup__button-add");
+const buttonSubmitEditAvatar = document.querySelector(
+  ".popup__button-edit-avatar"
+);
 const popupNewCard = document.querySelector(".popup_type_new-card");
 const popupEdit = document.querySelector(".popup_type_edit");
 const popupChangeAvatar = document.querySelector(".popup_type_avatar");
@@ -86,37 +91,75 @@ const handleOpenPopupClickEditAvatar = () => {
 // функция для редактирования профиля
 const handleFormSubmitEditProfile = (evt) => {
   evt.preventDefault();
-  renderLoading(true);
-  profileTitle.textContent = inputName.value;
-  profileDescription.textContent = inputJob.value;
-  updateProfile();
+  renderLoading(true, buttonSubmitEditProfile);
+  updateProfile({ name: inputName.value, about: inputJob.value })
+    .then((data) => {
+      profileTitle.textContent = data.value;
+      profileDescription.textContent = data.value;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, buttonSubmitEditProfile);
+    });
   closePopup(popupEdit);
 };
 
 // функция для добавления новой карточки через модальное окно
 const handleFormSubmitNewCard = (evt) => {
   evt.preventDefault();
-  renderLoading(true);
+  renderLoading(true, buttonSubmitAddCard);
   const inputUrlFormAddNewCardValue = inputUrlFormAddNewCard.value;
   const inputNameFormAddNewCardValue = inputNameFormAddNewCard.value;
   const dataNewCard = {
     name: inputNameFormAddNewCardValue,
     link: inputUrlFormAddNewCardValue,
   };
-  addNewCard(dataNewCard);
+  addNewCard(dataNewCard)
+    .then((data) => {
+      const newCard = addCard(
+        data,
+        (cardId, cardElement) => {
+          deleteCardData(cardId)
+            .then(() => {
+              deleteCard(cardElement);
+            })
+            .catch((err) => console.log(err));
+        },
+        like,
+        openPopupImage,
+        profileId
+      );
+      placesList.prepend(newCard);
+      formElementNewCard.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, buttonSubmitAddCard);
+    });
   closePopup(popupNewCard);
-  formElementNewCard.reset();
 };
 
 // функция изменения аватара через модальное окно
 const handleFormSubmitEditAvatar = (evt) => {
   evt.preventDefault();
-  renderLoading(true);
+  renderLoading(true, buttonSubmitEditAvatar);
   closePopup(popupChangeAvatar);
   const link = inputEditAvatar.value;
-  editAvatar(link);
-
-  formEditAvatar.reset();
+  editAvatar(link)
+    .then((data) => {
+      profileAvatar.style.backgroundImage = `url(${data.avatar})`;
+      formEditAvatar.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, buttonSubmitEditAvatar);
+    });
 };
 
 // Валидация
@@ -156,10 +199,15 @@ Promise.all([getUserInformation(), getInitialCards()])
     cardsData.forEach((item) => {
       const newCard = addCard(
         item,
-        deleteCardData,
+        (cardId, cardElement) => {
+          deleteCardData(cardId)
+            .then(() => {
+              deleteCard(cardElement);
+            })
+            .catch((err) => console.log(err));
+        },
         like,
         openPopupImage,
-        deleteCard,
         profileId
       );
       placesList.append(newCard);
