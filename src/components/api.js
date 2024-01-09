@@ -94,12 +94,8 @@ export const editAvatar = (link) => {
 // функция улучшения UX, пока данные загружаются
 export const renderLoading = (isLoading, buttonSubmit) => {
   if (isLoading) {
-    buttonSubmit.forEach((button) => {
-      button.textContent = "Сохранение...";
-    });
+    buttonSubmit.textContent = "Сохранение...";
   } else {
-    buttonSubmit.forEach((button) => {
-      button.textContent = "Сохранить";
-    });
+    buttonSubmit.textContent = "Сохранить";
   }
 };

@@ -45,9 +45,9 @@ const buttonEdit = document.querySelector(".profile__edit-button");
 const buttonAdd = document.querySelector(".profile__add-button");
 const buttonChangeAvatar = document.querySelector(".profile__image");
 const buttonPopupClose = document.querySelectorAll(".popup__close");
-const buttonSubmitEditProfile = document.querySelectorAll(".popup__button-edit");
-const buttonSubmitAddCard = document.querySelectorAll(".popup__button-add");
-const buttonSubmitEditAvatar = document.querySelectorAll(
+const buttonSubmitEditProfile = document.querySelector(".popup__button-edit");
+const buttonSubmitAddCard = document.querySelector(".popup__button-add");
+const buttonSubmitEditAvatar = document.querySelector(
   ".popup__button-edit-avatar"
 );
 const popupNewCard = document.querySelector(".popup_type_new-card");
@@ -96,7 +96,7 @@ const handleFormSubmitEditProfile = (evt) => {
     .then((data) => {
       profileTitle.textContent = data.name;
       profileDescription.textContent = data.about;
-			closePopup(popupEdit);
+      closePopup(popupEdit);
     })
     .catch((err) => {
       console.log(err);
@@ -132,7 +132,7 @@ const handleFormSubmitNewCard = (evt) => {
         profileId
       );
       placesList.prepend(newCard);
-			closePopup(popupNewCard);
+      closePopup(popupNewCard);
       formElementNewCard.reset();
     })
     .catch((err) => {
@@ -151,7 +151,7 @@ const handleFormSubmitEditAvatar = (evt) => {
   editAvatar(link)
     .then((data) => {
       profileAvatar.style.backgroundImage = `url(${data.avatar})`;
-			closePopup(popupChangeAvatar);
+      closePopup(popupChangeAvatar);
       formEditAvatar.reset();
     })
     .catch((err) => {
