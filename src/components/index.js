@@ -45,9 +45,9 @@ const buttonEdit = document.querySelector(".profile__edit-button");
 const buttonAdd = document.querySelector(".profile__add-button");
 const buttonChangeAvatar = document.querySelector(".profile__image");
 const buttonPopupClose = document.querySelectorAll(".popup__close");
-const buttonSubmitEditProfile = document.querySelector(".popup__button-edit");
-const buttonSubmitAddCard = document.querySelector(".popup__button-add");
-const buttonSubmitEditAvatar = document.querySelector(
+const buttonSubmitEditProfile = document.querySelectorAll(".popup__button-edit");
+const buttonSubmitAddCard = document.querySelectorAll(".popup__button-add");
+const buttonSubmitEditAvatar = document.querySelectorAll(
   ".popup__button-edit-avatar"
 );
 const popupNewCard = document.querySelector(".popup_type_new-card");
@@ -94,8 +94,9 @@ const handleFormSubmitEditProfile = (evt) => {
   renderLoading(true, buttonSubmitEditProfile);
   updateProfile({ name: inputName.value, about: inputJob.value })
     .then((data) => {
-      profileTitle.textContent = data.value;
-      profileDescription.textContent = data.value;
+      profileTitle.textContent = data.name;
+      profileDescription.textContent = data.about;
+			closePopup(popupEdit);
     })
     .catch((err) => {
       console.log(err);
@@ -103,7 +104,6 @@ const handleFormSubmitEditProfile = (evt) => {
     .finally(() => {
       renderLoading(false, buttonSubmitEditProfile);
     });
-  closePopup(popupEdit);
 };
 
 // функция для добавления новой карточки через модальное окно
@@ -132,6 +132,7 @@ const handleFormSubmitNewCard = (evt) => {
         profileId
       );
       placesList.prepend(newCard);
+			closePopup(popupNewCard);
       formElementNewCard.reset();
     })
     .catch((err) => {
@@ -140,18 +141,17 @@ const handleFormSubmitNewCard = (evt) => {
     .finally(() => {
       renderLoading(false, buttonSubmitAddCard);
     });
-  closePopup(popupNewCard);
 };
 
 // функция изменения аватара через модальное окно
 const handleFormSubmitEditAvatar = (evt) => {
   evt.preventDefault();
   renderLoading(true, buttonSubmitEditAvatar);
-  closePopup(popupChangeAvatar);
   const link = inputEditAvatar.value;
   editAvatar(link)
     .then((data) => {
       profileAvatar.style.backgroundImage = `url(${data.avatar})`;
+			closePopup(popupChangeAvatar);
       formEditAvatar.reset();
     })
     .catch((err) => {

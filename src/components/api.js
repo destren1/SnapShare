@@ -27,9 +27,7 @@ export const getUserInformation = () => {
 export const updateProfile = ({ name, about }) => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: "PATCH",
-    headers: {
-      Authorization: config.headers,
-    },
+    headers: config.headers,
     body: JSON.stringify({
       name: name,
       about: about,
@@ -50,9 +48,7 @@ export const getInitialCards = () => {
 export const addNewCard = (newCard) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: "POST",
-    headers: {
-      Authorization: config.headers,
-    },
+    headers: config.headers,
     body: JSON.stringify({
       name: newCard.name,
       link: newCard.link,
@@ -62,11 +58,9 @@ export const addNewCard = (newCard) => {
 
 // удаление данных карточки с сервера
 export const deleteCardData = (cardId) => {
-  fetch(`${config.baseUrl}/cards/${cardId}`, {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
-    headers: {
-      Authorization: config.headers,
-    },
+    headers: config.headers,
   }).then(getResponseData);
 };
 
@@ -74,9 +68,7 @@ export const deleteCardData = (cardId) => {
 export const displayingLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
-    headers: {
-      Authorization: config.headers,
-    },
+    headers: config.headers,
   }).then(getResponseData);
 };
 
@@ -84,19 +76,15 @@ export const displayingLikeCard = (cardId) => {
 export const deleteLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
-    headers: {
-      Authorization: config.headers,
-    },
+    headers: config.headers,
   }).then(getResponseData);
 };
 
 // изменение аватара
 export const editAvatar = (link) => {
-  fetch(`${config.baseUrl}/users/me/avatar`, {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: "PATCH",
-    headers: {
-      Authorization: config.headers,
-    },
+    headers: config.headers,
     body: JSON.stringify({
       avatar: link,
     }),
