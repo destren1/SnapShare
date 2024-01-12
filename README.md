@@ -1,4 +1,4 @@
-<h1 align="center"><a  href="https://destren1.github.io/mesto-project-ff/" target="_blank"><img src="./readme_src/mesto_header.png" width="100%" alt="логотип проекта место"></a></h1>
+<h1 align="center"><a  href="https://destren1.github.io/mesto-project-ff/" target="_blank"><img src="./src/images/mesto_header.png" width="100%" alt="логотип проекта место"></a></h1>
 
 ## Краткое описание:
 
