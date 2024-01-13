@@ -54,5 +54,8 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin()
-	]
+	],
+	stats: {
+    children: true,
+  },
 };

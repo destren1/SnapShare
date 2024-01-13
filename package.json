@@ -4,8 +4,8 @@
   "description": "Проектная работа на применение начальных навыков JS",
   "main": "index.js",
   "scripts": {
-		"predeploy": "npm run build",
-		"deploy":"gh-pages -d dist",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "build": "webpack --mode production",
     "dev": "webpack serve"
   },
@@ -14,7 +14,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.3",
     "@babel/preset-env": "^7.23.3",
-    "autoprefixer": "^10.4.16",
+    "autoprefixer": "10.4.5",
     "babel-loader": "^9.1.3",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.8.1",
