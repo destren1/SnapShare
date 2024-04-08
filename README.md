@@ -23,7 +23,7 @@
 - Анимации с использованием CSS
 - Методология BEM (Block Element Modifier)
 - Файловая структура BEM Nested
-- JavaScript (ООП, асинхронный JS, DOM API, Fetch API)
+- JavaScript (асинхронный JS, DOM API, Fetch API)
 - Валидация форм на стороне клиента
 - Адаптивная верстка для мобильных устройств, планшетов и десктопов
 - Использование Webpack
